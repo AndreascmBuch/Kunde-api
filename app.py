@@ -8,16 +8,7 @@ def get_db_connection():
 
 app = Flask(__name__)
 
-# test route så vi ikke får 404
-@app.route('/', methods=['GET'])
-def home():
-    return jsonify({
-        "service": "Kunde Service",
-        "version": "1.0.0",
-        "description": "A RESTful API for managing customers"
-    })
-
-
+#Tilføj kunde
 @app.route('/ddd', methods=['POST'])
 def add_user():
  # Parse JSON from the request body
@@ -38,6 +29,48 @@ def add_user():
     conn.close()
 
     return jsonify({"message": "User added successfully!"}), 201
+
+#Hent alle kunder
+@app.route('/customers', methods=['GET'])
+def getall():
+    conn = get_db_connection
+    cursor = conn.cursor()
+    cursor.exectute("SELECT * FROM kunder")
+    kunder = cursor.fetchall()
+    conn.close()
+    return jsonify
+
+#Hent specifik kunde
+@app.route('/customers/<int:kunde_id>', methods=['GET'])
+def get_customer(kunde_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM kunder WHERE kunde_id = ?", (kunde_id,))
+    customer = cursor.fetchone()
+    conn.close()
+    return jsonify
+
+#Rediger en kunde
+
+#Slet en kunde
+@app.route('/customers/<int:kunde_id>', methods=['DELETE'])
+def delete(kunde_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM kunder WHERE kunde_id = ?", (kunde_id,))
+    conn.commit()
+    conn.close()
+    jsonify
+
+# test route så vi ikke får 404
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "service": "Kunde Service",
+        "version": "1.0.0",
+        "description": "A RESTful API for managing customers"
+    })
+
 
 if __name__ == '__main__':
     app.run()
