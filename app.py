@@ -8,6 +8,15 @@ def get_db_connection():
 
 app = Flask(__name__)
 
+# test route så vi ikke får 404
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({
+        "service": "Kunde Service",
+        "version": "1.0.0",
+        "description": "A RESTful API for managing customers"
+    })
+
 
 @app.route('/ddd', methods=['POST'])
 def add_user():
