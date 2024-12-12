@@ -38,7 +38,7 @@ def getall():
     cursor.exectute("SELECT * FROM kunder")
     kunder = cursor.fetchall()
     conn.close()
-    return jsonify
+    return jsonify(kunder)
 
 #Hent specifik kunde
 @app.route('/customers/<int:kunde_id>', methods=['GET'])
