@@ -33,11 +33,12 @@ def add_user():
 #Hent alle kunder
 @app.route('/customers', methods=['GET'])
 def getall():
-    conn = get_db_connection
+    conn = get_db_connection()
     cursor = conn.cursor()
-    cursor.exectute("SELECT * FROM kunder")
+    cursor.execute("SELECT * FROM kunder")
     kunder = cursor.fetchall()
     conn.close()
+    kunder = [dict(row) for row in kunder]  # Convert each row to a dictionary
     return jsonify(kunder)
 
 #Hent specifik kunde
@@ -48,7 +49,10 @@ def get_customer(kunde_id):
     cursor.execute("SELECT * FROM kunder WHERE kunde_id = ?", (kunde_id,))
     customer = cursor.fetchone()
     conn.close()
-    return jsonify
+    if customer:
+        return jsonify(dict(customer)), 200  # Convert the single row to a dictionary
+    else:
+        return jsonify({"message": "Customer not found"}), 404
 
 #Rediger en kunde
 
@@ -60,7 +64,7 @@ def delete(kunde_id):
     cursor.execute("DELETE FROM kunder WHERE kunde_id = ?", (kunde_id,))
     conn.commit()
     conn.close()
-    jsonify
+    return jsonify({"message": "Customer deleted successfully!"}), 200
 
 # test route så vi ikke får 404
 @app.route('/', methods=['GET'])
