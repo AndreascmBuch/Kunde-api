@@ -9,7 +9,7 @@ def get_db_connection():
 app = Flask(__name__)
 
 #Tilføj kunde
-@app.route('/ddd', methods=['POST'])
+@app.route('/adduser, methods=['POST'])
 def add_user():
  # Parse JSON from the request body
     data = request.get_json()
