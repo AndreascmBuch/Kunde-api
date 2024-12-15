@@ -91,6 +91,7 @@ python app.py
 - **Response:**
 
 **200 OK:** Kunde slettet succesfuldt
+
 **404 Not Found:** Kunden findes ikke
 
 ### Bemærkninger
