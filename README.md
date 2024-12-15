@@ -71,7 +71,7 @@ python app.py
 - **Method:** `GET`
 - **Response:**
 
-200 OK: Returnerer oplysninger om den ønskede kunde
+**200 OK:** Returnerer oplysninger om den ønskede kunde
 
 ```
 {
@@ -83,15 +83,15 @@ python app.py
 }
 ```
 
-404 Not Found: Kunden findes ikke
+**404 Not Found:** Kunden findes ikke
 
 ## 4. Slet en kunde
 - **URL:** `/customers/<kunde_id>`
 - **Method:** `DELETE`
 - **Response:**
 
-200 OK: Kunde slettet succesfuldt
-404 Not Found: Kunden findes ikke
+**200 OK:** Kunde slettet succesfuldt
+**404 Not Found:** Kunden findes ikke
 
 ### Bemærkninger
 Databasen: Systemet bruger en SQLite-database (kunde_database.db). For produktionsbrug bør en mere skalerbar løsning overvejes.
