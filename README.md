@@ -50,7 +50,7 @@ python app.py
   
 ## 2. Hent alle kunder
 - **URL:** `/customers`
-- **Method:** GET
+- **Method:** `GET`
 - **Response:**
 
 **200 OK:** Returnerer en liste over alle kunder
@@ -68,7 +68,7 @@ python app.py
 
 ## 3. Hent en specifik kunde
 - **URL:** `/customers/<kunde_id>`
-- **Method:** GET
+- **Method:** `GET`
 - **Response:**
 
 200 OK: Returnerer oplysninger om den ønskede kunde
@@ -87,7 +87,7 @@ python app.py
 
 ## 4. Slet en kunde
 - **URL:** `/customers/<kunde_id>`
-- **Method:** DELETE
+- **Method:** `DELETE`
 - **Response:**
 
 200 OK: Kunde slettet succesfuldt
