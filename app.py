@@ -2,6 +2,8 @@ import sqlite3
 from flask import Flask, jsonify, request
 from dotenv import load_dotenv # import fra .env fil
 import os
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+
 
 # Load environment variables fra .env filen
 load_dotenv()
@@ -38,6 +40,7 @@ def add_user():
 
 #Hent alle kunder
 @app.route('/customers', methods=['GET'])
+@jwt_required()
 def getall():
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -49,6 +52,7 @@ def getall():
 
 #Hent specifik kunde
 @app.route('/customers/<int:kunde_id>', methods=['GET'])
+@jwt_required()
 def get_customer(kunde_id):
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -64,6 +68,7 @@ def get_customer(kunde_id):
 
 #Slet en kunde
 @app.route('/customers/<int:kunde_id>', methods=['DELETE'])
+@jwt_required()
 def delete(kunde_id):
     conn = get_db_connection()
     cursor = conn.cursor()
