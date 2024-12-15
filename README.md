@@ -30,21 +30,13 @@ Start applikationen:
 python app.py
 ```
 
-# Anvendelse
-Når applikationen kører, kan du få adgang til følgende endpoints for at interagere med kundedatabasen.
+# API Endpoints
+## 1. Registrer en ny kunde
+- **URL:**  `/adduser`
+- **Method:** `POST`
+- **Request Body: JSON**
 
-### Endpoints
-GET /
-Returnerer generel information om tjenesten.
-
-```bash
-curl http://localhost:5000/
-POST /adduser
 ```
-
-Tilføjer en ny kunde til databasen. Kræver JSON-data:
-
-```bash
 {
   "name": "John Doe",
   "adress": "123 Main St",
@@ -52,28 +44,58 @@ Tilføjer en ny kunde til databasen. Kræver JSON-data:
   "betaling": 100
 }
 ```
+- **Response:**
+**201 Created:** Kunde tilføjet succesfuldt
+**400 Bad Request:** Manglende eller ugyldige data
+  
+## 2. Hent alle kunder
+- **URL:** `/customers`
+- **Method:** GET
+- **Response:**
 
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{"name": "John Doe", "adress": "123 Main St", "contact": "john.doe@example.com", "betaling": 100}' http://localhost:5000/adduser
-GET /customers
+**200 OK:** Returnerer en liste over alle kunder
+```
+[
+  {
+    "kunde_id": 1,
+    "name": "John Doe",
+    "adress": "123 Main St",
+    "contact": "john.doe@example.com",
+    "betaling": 100
+  }
+]
 ```
 
-Henter en liste over alle kunder.
+## 3. Hent en specifik kunde
+- **URL:** `/customers/<kunde_id>`
+- **Method:** GET
+- **Response:**
 
-```bash
-curl http://localhost:5000/customers
-GET /customers/<kunde_id>
+200 OK: Returnerer oplysninger om den ønskede kunde
+
+```
+{
+  "kunde_id": 1,
+  "name": "John Doe",
+  "adress": "123 Main St",
+  "contact": "john.doe@example.com",
+  "betaling": 100
+}
 ```
 
-Henter en specifik kunde baseret på kunde_id.
+404 Not Found: Kunden findes ikke
 
-```bash
-curl http://localhost:5000/customers/1
-DELETE /customers/<kunde_id>
-```
+## 4. Slet en kunde
+- **URL:** `/customers/<kunde_id>`
+- **Method:** DELETE
+- **Response:**
 
-```bash
-curl -X DELETE http://localhost:5000/customers/1
-```
+200 OK: Kunde slettet succesfuldt
+404 Not Found: Kunden findes ikke
+
+### Bemærkninger
+Databasen: Systemet bruger en SQLite-database (kunde_database.db). For produktionsbrug bør en mere skalerbar løsning overvejes.
+Autorisering: Ingen autorisation er på nuværende tidspunkt implementeret. I en produktionsapplikation bør autentifikation som JWT overvejes.
+Opdatering af kunder: Endpoints til opdatering af kundedata mangler og kan tilføjes efter behov.
 Licens
-MIT-licensen - se LICENSE.md for detaljer.
+MIT License
