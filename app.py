@@ -7,7 +7,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 
 # Load environment variables fra .env filen
 load_dotenv()
-db_path=os.getenv("db_path", "user_database.db")
+db_path=os.getenv("db_path", "kunde_database.db")
 
 def get_db_connection():
     conn = sqlite3.connect('db_path')
