@@ -80,8 +80,8 @@ def getall():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM kunder")
     kunder = cursor.fetchall()
-    kunder = [dict(row) for row in kunder]  # Convert each row to a dictionary
     conn.close()
+    kunder = [dict(row) for row in kunder]  # Convert each row to a dictionary
     return jsonify(kunder)
 
 #Hent specifik kunde
