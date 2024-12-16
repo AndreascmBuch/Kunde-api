@@ -4,17 +4,25 @@ from dotenv import load_dotenv # import fra .env fil
 import os
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 
-
 # Load environment variables fra .env filen
 load_dotenv()
 db_path=os.getenv("db_path", "kunde_database.db")
 
 def get_db_connection():
-    conn = sqlite3.connect('db_path')
+    conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     return conn
 
 app = Flask(__name__)
+
+# Configure JWT settings
+app.config['JWT_SECRET_KEY'] = 'your_secret_key'  # Replace with your actual secret key
+app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Ensure tokens are in headers
+app.config['JWT_HEADER_NAME'] = 'Authorization'  # Default header name for JWT
+app.config['JWT_HEADER_TYPE'] = 'Bearer'  # Prefix for the token (e.g., Bearer <token>)
+
+# Initialize the JWT manager
+jwt = JWTManager(app)
 
 #Tilføj kunde
 @app.route('/adduser', methods=['POST'])
