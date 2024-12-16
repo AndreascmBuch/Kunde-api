@@ -24,6 +24,25 @@ app.config['JWT_HEADER_TYPE'] = 'Bearer'  # Prefix for the token (e.g., Bearer <
 # Initialize the JWT manager
 jwt = JWTManager(app)
 
+# Ensure the database and 'kunder' table exist
+def init_db():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS kunder (
+            kunde_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name VARCHAR(100),
+            adress VARCHAR(255),
+            contact VARCHAR(100),
+            betaling INTEGER
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+# Call this function at the start of the application
+init_db()
+
 #Tilføj kunde
 @app.route('/adduser', methods=['POST'])
 def add_user():
