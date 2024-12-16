@@ -46,7 +46,7 @@ def close_db(error):
 with sqlite3.connect(db_path) as conn:
     cursor = conn.cursor()
     cursor.execute('''
-     CREATE TABLE IF NOT EXISTS damage(
+     CREATE TABLE IF NOT EXISTS kunder(
      kunde_id INTEGER PRIMARY KEY AUTOINCREMENT,
      name VARCHAR(100),
      adress VARCHAR(255),
