@@ -16,7 +16,7 @@ def get_db_connection():
 app = Flask(__name__)
 
 # Configure JWT settings
-app.config['JWT_SECRET_KEY'] = 'your_secret_key'  # Replace with your actual secret key
+app.config['JWT_SECRET_KEY'] = os.getenv('KEY', 'your_secret_key')  # Load from .env
 app.config['JWT_TOKEN_LOCATION'] = ['headers']  # Ensure tokens are in headers
 app.config['JWT_HEADER_NAME'] = 'Authorization'  # Default header name for JWT
 app.config['JWT_HEADER_TYPE'] = 'Bearer'  # Prefix for the token (e.g., Bearer <token>)
@@ -42,13 +42,6 @@ def init_db():
 
 # Call this function at the start of the application
 init_db()
-
-@app.route('/debug', methods=['GET'])
-def debug():
-    return jsonify({
-        "JWT_SECRET_KEY": app.config['JWT_SECRET_KEY'],
-        "Database_Path": db_path
-    }), 200
 
 #Tilføj kunde
 @app.route('/adduser', methods=['POST'])
