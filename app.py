@@ -1,17 +1,14 @@
 import sqlite3
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, g
 from dotenv import load_dotenv # import fra .env fil
 import os
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 
 # Load environment variables fra .env filen
 load_dotenv()
-db_path=os.getenv("db_path", "kunde_database.db")
 
-def get_db_connection():
-    conn = sqlite3.connect(db_path)
-    conn.row_factory = sqlite3.Row
-    return conn
+
+db_path=os.getenv("db_path", "kunde_database.db")
 
 app = Flask(__name__)
 
@@ -31,24 +28,33 @@ def debug():
         "Database_Path": db_path
     }), 200
 
+
+
+def get_db_connection():
+    if 'db' not in g:
+        g.db = sqlite3.connect(db_path) 
+        g.db.row_factory = sqlite3.Row
+    return g.db
+
+@app.teardown_appcontext
+def close_db(error):
+    if 'db' in g:
+        g.db.close()
+
+
 # Ensure the database and 'kunder' table exist
-def init_db():
-    conn = get_db_connection()
+with sqlite3.connect(db_path) as conn:
     cursor = conn.cursor()
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS kunder (
-            kunde_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name VARCHAR(100),
-            adress VARCHAR(255),
-            contact VARCHAR(100),
-            betaling INTEGER
-        )
+     CREATE TABLE IF NOT EXISTS damage(
+     kunde_id INTEGER PRIMARY KEY AUTOINCREMENT,
+     name VARCHAR(100),
+     adress VARCHAR(255),
+     contact VARCHAR(100),
+     betaling INTEGER 
+    )
     ''')
     conn.commit()
-    conn.close()
-
-# Call this function at the start of the application
-init_db()
 
 #Tilføj kunde
 @app.route('/adduser', methods=['POST'])
