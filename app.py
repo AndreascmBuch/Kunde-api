@@ -24,6 +24,13 @@ app.config['JWT_HEADER_TYPE'] = 'Bearer'  # Prefix for the token (e.g., Bearer <
 # Initialize the JWT manager
 jwt = JWTManager(app)
 
+@app.route('/debug', methods=['GET'])
+def debug():
+    return jsonify({
+        "JWT_SECRET_KEY": os.getenv('KEY', 'Not Set'),
+        "Database_Path": db_path
+    }), 200
+
 # Ensure the database and 'kunder' table exist
 def init_db():
     conn = get_db_connection()
