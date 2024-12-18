@@ -66,6 +66,14 @@ def add_user():
     contact = data.get('contact')
     betaling = data.get('betaling')
 
+    #error til adduser input
+    if not data:
+        return jsonify({"error": "Request body is missing"}), 400
+    
+    # error hvis ikke alle felter er udfyldt
+    if not all([name, adress, contact, betaling]):
+        return jsonify({"error": "All fields (name, adress, contact, betaling) are required"}), 400
+
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -107,7 +115,7 @@ def get_customer(kunde_id):
 #Rediger en kunde
 
 #Slet en kunde
-@app.route('/customers/<int:kunde_id>', methods=['DELETE'])
+@app.route('/customers/delete/<int:kunde_id>', methods=['DELETE'])
 @jwt_required()
 def delete(kunde_id):
     conn = get_db_connection()
