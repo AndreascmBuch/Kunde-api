@@ -107,7 +107,7 @@ def get_customer(kunde_id):
 #Rediger en kunde
 
 #Slet en kunde
-@app.route('/customers/<int:kunde_id>', methods=['DELETE'])
+@app.route('/customers/delete/<int:kunde_id>', methods=['DELETE'])
 @jwt_required()
 def delete(kunde_id):
     conn = get_db_connection()
